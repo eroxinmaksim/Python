@@ -1,0 +1,53 @@
+import matplotlib.pyplot as plt
+import Lab1
+
+spam_arr = Lab1.dict_spam
+ham_arr = Lab1.dict_ham
+spam_d = {}
+ham_d = {}
+
+
+def avg(array):
+    len_w = 0
+    val_w = 0
+    for key, value in array.items():
+        len_w += len(key) * value
+        val_w += value
+    return len_w / val_w
+
+
+print('Средняя длина в категории spam: ', avg(spam_arr))
+print('Средняя длина в категории ham : ', avg(ham_arr))
+
+
+def max_ar(array):
+    max_w = 0
+    for key, value in array.items():
+        if len(key) > max_w:
+            max_w = len(key)
+    return max_w
+
+
+max_spam = max_ar(spam_arr)
+max_ham = max_ar(ham_arr)
+
+
+def rewrite_data(arr_in, arr_out, max_w):
+    for item in range(0, max_w):
+        arr_out[item] = 0
+    for key, value in arr_in.items():
+        for i in range(0, max_w):
+            if len(key) == i:
+                arr_out[i] += value
+
+
+rewrite_data(spam_arr, spam_d, max_spam)
+rewrite_data(ham_arr, ham_d, max_ham)
+
+fig, gr1 = plt.subplots()
+plt.title('Диаграмма длины предложений по словам и их частота')
+gr1.plot(spam_d.keys(), spam_d.values(), 'y')
+gr1.plot(ham_d.keys(), ham_d.values(), 'b')
+gr1.set_xlabel('к-во слов', fontsize=15, color='red')
+gr1.set_ylabel('Частота', fontsize=15, color='red')
+plt.show()
